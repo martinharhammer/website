@@ -1,0 +1,24 @@
+@use 'sass:math';
+@function rem($size) {
+    $remSize: math.div($size, 16px);
+    @return #{$remSize}rem;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+canvas {
+    width: rem(500px);
+    height: rem(500px);
+}
+
+#myCanvas {
+    outline: rem(2px) solid #333;
+}
+

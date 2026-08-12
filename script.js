@@ -2,23 +2,19 @@ const mazeBuilder = {
     createPath(blocks, grid) {
         let currentX = rand(blocks);
         let currentY = rand(blocks);
+        grid[idx(currentX, currentY, blocks)] = 1;
 
         while (true) {
+            const neighbors = [];
+            if (currentX > 0 && grid[idx(currentX - 1, currentY, blocks)] === 0) neighbors.push([currentX - 1, currentY]);
+            if (currentX < blocks - 1 && grid[idx(currentX + 1, currentY, blocks)] === 0) neighbors.push([currentX + 1, currentY]);
+            if (currentY > 0 && grid[idx(currentX, currentY - 1, blocks)] === 0) neighbors.push([currentX, currentY - 1]);
+            if (currentY < blocks - 1 && grid[idx(currentX, currentY + 1, blocks)] === 0) neighbors.push([currentX, currentY + 1]);
+
+            if (neighbors.length === 0) break;
+
+            [currentX, currentY] = neighbors[rand(neighbors.length)];
             grid[idx(currentX, currentY, blocks)] = 1;
-
-            const dir = rand(4);
-            let nextX = currentX;
-            let nextY = currentY;
-
-            if (dir === 0) nextX--;
-            else if (dir === 1) nextY--;
-            else if (dir === 2) nextX++;
-            else nextY++;
-
-            if (nextX < 0 || nextX >= blocks || nextY < 0 || nextY >= blocks) break;
-
-            currentX = nextX;
-            currentY = nextY;
         }
     }
 
@@ -43,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let x = 0; x < blocks; x++) {
             if (grid[idx(x, y, blocks)] === 1) {
                 ctx.fillStyle = 'red';
-                ctx.fillRect(x * blockSize, y * blockSize, blockSize, blockSize);
+                ctx.fillRect(x * blockSize + 1, y * blockSize + 1, blockSize - 2, blockSize - 2);
             }
         }
     }
